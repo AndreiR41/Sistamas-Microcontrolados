@@ -58,6 +58,23 @@ botoes:
 	*/
 
 
+;=================================================HABILITA INTERRUPÇÃO==================================================
+; Habilita interrupções PCINT9 (PC1) e PCINT11 (PC3)                          SIMULADOR NÃO FAZ INTERRUPÇÃO
+    LDI r16, (1<<PCINT9) | (1<<PCINT11)
+    STS PCMSK1, r16      ; Habilita bits individuais
+    LDI r16, (1<<PCIE1)
+    STS PCICR, r16        ; Habilita grupo PCINT1 (PORTC)
+	SEI
+	
+;=================================================SAÍDAS==================================================
+organiza:
+	; CONFIGURANDO PINOS DE SAÍDA
+	LDI R23,(1<<PB0)
+	OUT DDRB,R23     ; PB0 COMO SAÍDA
+	LDI R23,(1<<PD2)|(1<<PD3)|(1<<PD4)|(1<<PD5)|(1<<PD6)|(1<<PD7)
+	OUT DDRD,R23  ; PD7:PD2
+
+
 ;=================================================INICIAL==================================================
 inicial: 
 	; Carregando os valores de ATUAL
@@ -74,18 +91,8 @@ inicial:
 	; carregando registrador com zero para somar 16 bits com 8 GAMBIARRA
 	LDI R24, 0x00 
 
-	 ; Habilita interrupções PCINT9 (PC1) e PCINT11 (PC3)                             NAO COSEGUI FAZER FUNCIONAR
-    LDI r16, (1<<PCINT9) | (1<<PCINT11)
-    STS PCMSK1, r16      ; Habilita bits individuais
-    LDI r16, (1<<PCIE1)
-    STS PCICR, r16        ; Habilita grupo PCINT1 (PORTC)
-	SEI
-organiza:
-	; CONFIGURANDO PINOS DE SAÍDA
-	LDI R23,(1<<PB0)
-	OUT DDRB,R23     ; PB0 COMO SAÍDA
-	LDI R23,(1<<PD2)|(1<<PD3)|(1<<PD4)|(1<<PD5)|(1<<PD6)|(1<<PD7)
-	OUT DDRD,R23  ; PD7:PD2
+	 
+;=================================================CONTAGEM PADRÃO==================================================
 
 
 contagem:
@@ -96,7 +103,8 @@ contagem:
 ; Verifica se botão em PC2 está pressionado
 	SBRS R17,PC2
 	RCALL minimo
-	; Verifica se botão em PC1 está pressionado
+	;================= teste para verificar os outros botões estavam sendo acionados antes de configurar a interrupção
+	; Verifica se botão em PC1 está pressionado      
 /*	SBRS R17,PC1
 	RCALL incrementar
 	; Verifica se botão em PC3 está pressionado
@@ -105,41 +113,19 @@ contagem:
 
 
 ;CONTAGEM PADRÃO
+	LDI R17,0x00 ; LIMPA O TEMP PARA USAR NO SWAP
+	MOV R13,R24
+	MOV R14,R24 ; LIMPANDO OS CONTADORES BCD ANTES DE REALIZAR A PROXIMA EXIBIÇÃO
+	MOV R15,R24 
+
 	ADD XL, R25
 	ADC XH, R24
+	RCALL subcent    ; faz o BIN-BCD
+	RCALL exibir     ; mostra nos displays
 
+	; compara com o maximo
 	CP XL,YL
 	CPC XH,YH
-	RCALL subcent
-	;CENTENA
-	MOV R17,R13
-	RCALL mirror
-	MOV R13,R17
-	LDI R23,0b000000001
-	ADD R13,R23
-	OUT PORTD, R13
-	SBI PORTB,0
-	; DEZENA
-	MOV R17,R14
-	RCALL mirror
-	LDI R23,0b000001000
-	MOV R14,R17
-	ADD R14,R23
-	OUT PORTD, R14
-	CBI PORTB,0
-	; UNIDADE
-	MOV R17,R15
-	RCALL mirror
-	LDI R23,0b000000100
-	MOV R15,R17
-	ADD R15,R23
-	OUT PORTD, R15
-	CBI PORTB,0
-
-
-	
-
-
 	BRLO contagem; se menor volta para contagem
 	BRSH inicial ; se maior ou igual voltar para o inicio
 
@@ -153,6 +139,7 @@ incrementar:
 	CP XL,YL
 	CPC XH,YH
 ;	RCALL subcent
+;   RCALL exibir
 
 	BRLO incrementar; se menor volta para inc
 	RET ; se maior ou igual voltar 
@@ -166,6 +153,7 @@ decrementar:
 	CP XL,ZL
 	CPC XH,ZH
 	;RCALL subcent
+	;RCALL exibir
 
 	BRSH decrementar ; se maior ou igual voltar para o DEC
 	RET ; se menor voltar 
@@ -180,7 +168,7 @@ decrementar:
 
 		MOV ZL,R18 ; O valor menos significativo de ADC
 		MOV ZH,R19 ; O valor menos significativo de ADC
-
+		;RCALL exibir
 		;chama delay para esperar um segundo antes de ler os pinos C
 		RCALL delay
 		
@@ -197,7 +185,7 @@ decrementar:
 
 		MOV YL,R18 ; O valor menos significativo de ADC
 		MOV YH,R19 ; O valor menos significativo de ADC
-
+		;RCALL exibir
 		;chama delay para esperar um segundo antes de ler os pinos C
 		RCALL delay
 
@@ -212,7 +200,7 @@ decrementar:
 		RCALL ativar_adc
 
 		MOV R25,R18 ; O valor menos significativo de ADC
-
+		;RCALL exibir
 		;chama delay para esperar um segundo antes de ler os pinos C
 		RCALL delay
 
@@ -221,10 +209,11 @@ decrementar:
 		RJMP contagem
 		RJMP passo
 		
-;=================================================EXIBIR==================================================
+;=================================================BIN-BCD==================================================
 
 	;FAZER FUNCAO EXIBIR NOS DISPLAYS
-	; entender melhor ADIF no conversor
+	; ABSURDAMENTE ERRADO ESTAMOS PERDENDO A INFORMAÇÃO NO X (ATUAL PARA EXIBIR, ENTÃO FICAMOS CONTANDO DO 0 ATÉ O 1)
+	;ARMAZENAR TEMPORIAMENTE O ATUAL PARA REALIZAR OPERAÇÕES E COMPARAÇÕES !!!!
 
 	; 3 reg cent,dez,uni de 8 bits. Soma eles com respectivo valor 
 	;Os 4 LSBs (r16[3:0]) sejam copiados para os pinos PD7, PD6, PD5, PD4 (em ordem).
@@ -264,9 +253,38 @@ subuni:
 	CPI XL,0x01
 	BRGE subuni
 	RET	
-retorno:
+retorno:                   ; Tive que seguir os passos da lenda...
 	ret
-	
+
+;=================================================EXIBIÇÃO SAÍDAS==================================================
+exibir:    ;R17 temporario    ===== R13 Centena, R14 Dezena , R13 Unidade
+	;CENTENA
+	MOV R17,R13
+	RCALL mirror
+	MOV R13,R17
+	LDI R23,0b000000000
+	ADD R13,R23
+	OUT PORTD, R13
+	SBI PORTB,0
+	; DEZENA
+	MOV R17,R14
+	RCALL mirror
+	LDI R23,0b000001000
+	MOV R14,R17
+	ADD R14,R23
+	OUT PORTD, R14
+	CBI PORTB,0
+	; UNIDADE
+	MOV R17,R15
+	RCALL mirror
+	LDI R23,0b000000100
+	MOV R15,R17
+	ADD R15,R23
+	OUT PORTD, R15
+	CBI PORTB,0
+	RET
+
+;=================================================SWAP==================================================
 mirror:
 	;MOV R17, R13  ; EXIBINDO CENTENA 
 	SWAP R17
@@ -275,36 +293,37 @@ mirror:
 	CPI R17, 0x00
 	BREQ N0
 
-	CPI R17, 0x01
+	CPI R17, 0x10
 	BREQ N1
 
-	CPI R17, 0x02
+	CPI R17, 0x20
 	BREQ N2
 
-	CPI R17, 0x03
+	CPI R17, 0x30
 	BREQ N3
 
-	CPI R17, 0x04
+	CPI R17, 0x40
 	BREQ N4
 
-	CPI R17, 0x05
+	CPI R17, 0x50
 	BREQ N5
 
-	CPI R17, 0x06
+	CPI R17, 0x60
 	BREQ N6
 
-	CPI R17, 0x07
+	CPI R17, 0x70
 	BREQ N7
 
-	CPI R17, 0x08
+	CPI R17, 0x80
 	BREQ N8
 
-	CPI R17, 0x09
+	CPI R17, 0x90
 	BREQ N9
 
 	;OUT PORTD,R17
 	
 
+;=================================================ESPELHAMENTO==================================================
 N0:
 	LDI R17, 0x00
 	RET
@@ -337,16 +356,6 @@ N9:
 	RET
 
 	
-	
-
-
-	
-
-
-	
-	
-
-
 
 ;=================================================DELAY==================================================	
 delay:

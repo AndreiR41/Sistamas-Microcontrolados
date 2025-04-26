@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.2.8  C:\Users\andre\Desktop\Microcontroladores\Labs\Lab2\Contador_Inteligente\Contador_Inteligente\main.asm Fri Apr 25 21:45:56 2025
+AVRASM ver. 2.2.8  C:\Users\andre\Desktop\Microcontroladores\Labs\Lab2\Contador_Inteligente\Contador_Inteligente\main.asm Sat Apr 26 13:15:40 2025
 
 [builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m328Pdef.inc'
 C:\Users\andre\Desktop\Microcontroladores\Labs\Lab2\Contador_Inteligente\Contador_Inteligente\main.asm(6): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m328pdef.inc'
@@ -1041,7 +1041,7 @@ C:\Users\andre\Desktop\Microcontroladores\Labs\Lab2\Contador_Inteligente\Contado
 000000 c01d                      	RJMP botoes
                                  
                                  .org 0x0008        ; Vetor da interrupção PCINT1 (PORTC) mudança de valor
-000008 c0bc                          rjmp PCINT_ISR
+000008 c0c2                          rjmp PCINT_ISR
                                  
                                  
                                  
@@ -1089,34 +1089,41 @@ C:\Users\andre\Desktop\Microcontroladores\Labs\Lab2\Contador_Inteligente\Contado
                                  	*/
                                  
                                  
+                                 ;=================================================HABILITA INTERRUPÇÃO==================================================
+                                 ; Habilita interrupções PCINT9 (PC1) e PCINT11 (PC3)                          SIMULADOR NÃO FAZ INTERRUPÇÃO
+000022 e00a                          LDI r16, (1<<PCINT9) | (1<<PCINT11)
+000023 9300 006c                     STS PCMSK1, r16      ; Habilita bits individuais
+000025 e002                          LDI r16, (1<<PCIE1)
+000026 9300 0068                     STS PCICR, r16        ; Habilita grupo PCINT1 (PORTC)
+000028 9478                      	SEI
+                                 	
+                                 ;=================================================SAÍDAS==================================================
+                                 organiza:
+                                 	; CONFIGURANDO PINOS DE SAÍDA
+000029 e071                      	LDI R23,(1<<PB0)
+00002a b974                      	OUT DDRB,R23     ; PB0 COMO SAÍDA
+00002b ef7c                      	LDI R23,(1<<PD2)|(1<<PD3)|(1<<PD4)|(1<<PD5)|(1<<PD6)|(1<<PD7)
+00002c b97a                      	OUT DDRD,R23  ; PD7:PD2
+                                 
+                                 
                                  ;=================================================INICIAL==================================================
                                  inicial: 
                                  	; Carregando os valores de ATUAL
-000022 e0a0                      	LDI XL, 0x00
-000023 e0b0                      	LDI XH, 0x00
+00002d e0a0                      	LDI XL, 0x00
+00002e e0b0                      	LDI XH, 0x00
                                  	; Carregando os valores de MAXIMO
-000024 eec7                      	LDI YL, 0xE7
-000025 e0d3                      	LDI YH, 0x03
+00002f eec7                      	LDI YL, 0xE7
+000030 e0d3                      	LDI YH, 0x03
                                  	; Carregando os valores de MINIMO
-000026 e0e0                      	LDI ZL, 0x00
-000027 e0f0                      	LDI ZH, 0x00
+000031 e0e0                      	LDI ZL, 0x00
+000032 e0f0                      	LDI ZH, 0x00
                                  	; Carregando o valor de PASSO
-000028 e091                      	LDI R25,0x01
+000033 e091                      	LDI R25,0x01
                                  	; carregando registrador com zero para somar 16 bits com 8 GAMBIARRA
-000029 e080                      	LDI R24, 0x00 
+000034 e080                      	LDI R24, 0x00 
                                  
-                                 	 ; Habilita interrupções PCINT9 (PC1) e PCINT11 (PC3)                             NAO COSEGUI FAZER FUNCIONAR
-00002a e00a                          LDI r16, (1<<PCINT9) | (1<<PCINT11)
-00002b 9300 006c                     STS PCMSK1, r16      ; Habilita bits individuais
-00002d e002                          LDI r16, (1<<PCIE1)
-00002e 9300 0068                     STS PCICR, r16        ; Habilita grupo PCINT1 (PORTC)
-000030 9478                      	SEI
-                                 organiza:
-                                 	; CONFIGURANDO PINOS DE SAÍDA
-000031 e071                      	LDI R23,(1<<PB0)
-000032 b974                      	OUT DDRB,R23     ; PB0 COMO SAÍDA
-000033 ef7c                      	LDI R23,(1<<PD2)|(1<<PD3)|(1<<PD4)|(1<<PD5)|(1<<PD6)|(1<<PD7)
-000034 b97a                      	OUT DDRD,R23  ; PD7:PD2
+                                 	 
+                                 ;=================================================CONTAGEM PADRÃO==================================================
                                  
                                  
                                  contagem:
@@ -1126,8 +1133,9 @@ C:\Users\andre\Desktop\Microcontroladores\Labs\Lab2\Contador_Inteligente\Contado
                                  	; Se PC2 == 0 ? botão pressionado
                                  ; Verifica se botão em PC2 está pressionado
 000036 ff12                      	SBRS R17,PC2
-000037 d028                      	RCALL minimo
-                                 	; Verifica se botão em PC1 está pressionado
+000037 d018                      	RCALL minimo
+                                 	;================= teste para verificar os outros botões estavam sendo acionados antes de configurar a interrupção
+                                 	; Verifica se botão em PC1 está pressionado      
                                  /*	SBRS R17,PC1
                                  	RCALL incrementar
                                  	; Verifica se botão em PC3 está pressionado
@@ -1136,70 +1144,50 @@ C:\Users\andre\Desktop\Microcontroladores\Labs\Lab2\Contador_Inteligente\Contado
                                  
                                  
                                  ;CONTAGEM PADRÃO
-000038 0fa9                      	ADD XL, R25
-000039 1fb8                      	ADC XH, R24
+000038 e010                      	LDI R17,0x00 ; LIMPA O TEMP PARA USAR NO SWAP
+000039 2ed8                      	MOV R13,R24
+00003a 2ee8                      	MOV R14,R24 ; LIMPANDO OS CONTADORES BCD ANTES DE REALIZAR A PROXIMA EXIBIÇÃO
+00003b 2ef8                      	MOV R15,R24 
                                  
-00003a 17ac                      	CP XL,YL
-00003b 07bd                      	CPC XH,YH
-00003c d03a                      	RCALL subcent
-                                 	;CENTENA
-00003d 2d1d                      	MOV R17,R13
-00003e d053                      	RCALL mirror
-00003f 2ed1                      	MOV R13,R17
-000040 e071                      	LDI R23,0b000000001
-000041 0ed7                      	ADD R13,R23
-000042 b8db                      	OUT PORTD, R13
-000043 9a28                      	SBI PORTB,0
-                                 	; DEZENA
-000044 2d1e                      	MOV R17,R14
-000045 d04c                      	RCALL mirror
-000046 e078                      	LDI R23,0b000001000
-000047 2ee1                      	MOV R14,R17
-000048 0ee7                      	ADD R14,R23
-000049 b8eb                      	OUT PORTD, R14
-00004a 9828                      	CBI PORTB,0
-                                 	; UNIDADE
-00004b 2d1f                      	MOV R17,R15
-00004c d045                      	RCALL mirror
-00004d e074                      	LDI R23,0b000000100
-00004e 2ef1                      	MOV R15,R17
-00004f 0ef7                      	ADD R15,R23
-000050 b8fb                      	OUT PORTD, R15
-000051 9828                      	CBI PORTB,0
+00003c 0fa9                      	ADD XL, R25
+00003d 1fb8                      	ADC XH, R24
+00003e d028                      	RCALL subcent    ; faz o BIN-BCD
+00003f d042                      	RCALL exibir     ; mostra nos displays
                                  
-                                 
-                                 	
-                                 
-                                 
-000052 f310                      	BRLO contagem; se menor volta para contagem
-000053 f670                      	BRSH inicial ; se maior ou igual voltar para o inicio
+                                 	; compara com o maximo
+000040 17ac                      	CP XL,YL
+000041 07bd                      	CPC XH,YH
+000042 f390                      	BRLO contagem; se menor volta para contagem
+000043 f748                      	BRSH inicial ; se maior ou igual voltar para o inicio
                                  
                                  ;=================================================INCREMENTAR==================================================
                                  ; carrega os valores de minimo no atual
                                  
                                  incrementar:	
-000054 0fa9                      	ADD XL, R25
-000055 1fb8                      	ADC XH, R24
+000044 0fa9                      	ADD XL, R25
+000045 1fb8                      	ADC XH, R24
                                  
-000056 17ac                      	CP XL,YL
-000057 07bd                      	CPC XH,YH
+000046 17ac                      	CP XL,YL
+000047 07bd                      	CPC XH,YH
                                  ;	RCALL subcent
+                                 ;   RCALL exibir
                                  
-000058 f3d8                      	BRLO incrementar; se menor volta para inc
-000059 9508                      	RET ; se maior ou igual voltar 
+000048 f3d8                      	BRLO incrementar; se menor volta para inc
+000049 9508                      	RET ; se maior ou igual voltar 
                                  
                                  ;=================================================DECREMENTAR==================================================
                                  decrementar:
                                  	; subtrai atual com o passo
-00005a 1ba9                      	SUB XL, R25
-00005b 0bb8                      	SBC XH, R24
+00004a 1ba9                      	SUB XL, R25
+00004b 0bb8                      	SBC XH, R24
                                  
-00005c 17ae                      	CP XL,ZL
-00005d 07bf                      	CPC XH,ZH
+00004c 17ae                      	CP XL,ZL
+00004d 07bf                      	CPC XH,ZH
                                  	;RCALL subcent
+                                 	;RCALL exibir
                                  
-00005e f7d8                      	BRSH decrementar ; se maior ou igual voltar para o DEC
-00005f 9508                      	RET ; se menor voltar 
+00004e f7d8                      	BRSH decrementar ; se maior ou igual voltar para o DEC
+00004f 9508                      	RET ; se menor voltar 
                                  
                                  ;=================================================S2==================================================
                                  
@@ -1207,52 +1195,52 @@ C:\Users\andre\Desktop\Microcontroladores\Labs\Lab2\Contador_Inteligente\Contado
                                  	
                                  	minimo:
                                  ;		CHAMAR ADC E CARREGAR EM Z O VALOR LIDO
-000060 dfa8                      		RCALL ativar_adc
+000050 dfb8                      		RCALL ativar_adc
                                  
-000061 2fe2                      		MOV ZL,R18 ; O valor menos significativo de ADC
-000062 2ff3                      		MOV ZH,R19 ; O valor menos significativo de ADC
-                                 
+000051 2fe2                      		MOV ZL,R18 ; O valor menos significativo de ADC
+000052 2ff3                      		MOV ZH,R19 ; O valor menos significativo de ADC
+                                 		;RCALL exibir
                                  		;chama delay para esperar um segundo antes de ler os pinos C
-000063 d057                      		RCALL delay
+000053 d06d                      		RCALL delay
                                  		
-000064 b116                      		IN R17, PINC 
+000054 b116                      		IN R17, PINC 
                                  		; Verifica se botão em PC2 está pressionado
-000065 ff12                      		SBRS R17,PC2
-000066 d001                      		RCALL Maximo
-000067 cff8                      		RJMP minimo
+000055 ff12                      		SBRS R17,PC2
+000056 d001                      		RCALL Maximo
+000057 cff8                      		RJMP minimo
                                  		
                                  
                                  	Maximo:
                                  		;CHAMAR ADC E CARREGAR EM Y O VALOR LIDO
-000068 dfa0                      		RCALL ativar_adc
+000058 dfb0                      		RCALL ativar_adc
                                  
-000069 2fc2                      		MOV YL,R18 ; O valor menos significativo de ADC
-00006a 2fd3                      		MOV YH,R19 ; O valor menos significativo de ADC
-                                 
+000059 2fc2                      		MOV YL,R18 ; O valor menos significativo de ADC
+00005a 2fd3                      		MOV YH,R19 ; O valor menos significativo de ADC
+                                 		;RCALL exibir
                                  		;chama delay para esperar um segundo antes de ler os pinos C
-00006b d04f                      		RCALL delay
+00005b d065                      		RCALL delay
                                  
-00006c b116                      		IN R17, PINC 
-00006d ff12                      		SBRS R17,PC2
-00006e d001                      		RCALL passo
-00006f cff8                      		RJMP Maximo
+00005c b116                      		IN R17, PINC 
+00005d ff12                      		SBRS R17,PC2
+00005e d001                      		RCALL passo
+00005f cff8                      		RJMP Maximo
                                  		
                                  
                                  	passo:
                                  		;CHAMAR ADC E CARREGAR EM R25 O VALOR LIDO
-000070 df98                      		RCALL ativar_adc
+000060 dfa8                      		RCALL ativar_adc
                                  
-000071 2f92                      		MOV R25,R18 ; O valor menos significativo de ADC
-                                 
+000061 2f92                      		MOV R25,R18 ; O valor menos significativo de ADC
+                                 		;RCALL exibir
                                  		;chama delay para esperar um segundo antes de ler os pinos C
-000072 d048                      		RCALL delay
+000062 d05e                      		RCALL delay
                                  
-000073 b116                      		IN R17, PINC 
-000074 ff12                      		SBRS R17,PC2
-000075 cfbf                      		RJMP contagem
-000076 cff9                      		RJMP passo
+000063 b116                      		IN R17, PINC 
+000064 ff12                      		SBRS R17,PC2
+000065 cfcf                      		RJMP contagem
+000066 cff9                      		RJMP passo
                                  		
-                                 ;=================================================EXIBIR==================================================
+                                 ;=================================================BIN-BCD==================================================
                                  
                                  	;FAZER FUNCAO EXIBIR NOS DISPLAYS
                                  	; entender melhor ADIF no conversor
@@ -1262,140 +1250,160 @@ C:\Users\andre\Desktop\Microcontroladores\Labs\Lab2\Contador_Inteligente\Contado
                                  	;Os 3 MSBs (r16[7:5]) sejam copiados para os pinos PB0, PD3, PD2 (em ordem).
                                  
                                  subcent:
-000077 30b0                      	CPI XH,0x00
-000078 f019                      	BREQ subcentlow
-000079 97d2                      	SBIW XH:XL,50
-00007a 97d2                      	SBIW XH:XL,50
-00007b 94d3                      	INC R13
+000067 30b0                      	CPI XH,0x00
+000068 f019                      	BREQ subcentlow
+000069 97d2                      	SBIW XH:XL,50
+00006a 97d2                      	SBIW XH:XL,50
+00006b 94d3                      	INC R13
                                  
                                  subcentlow:
-00007c 36a4                      	CPI  XL,0x64
-00007d f028                      	BRLO subdez
-00007e 56a4                      	SUBI XL,0x64
-00007f 94d3                      	INC R13
-000080 36a4                      	CPI  XL,0x64
-000081 f7ac                      	BRGE subcent
-000082 f000                      	BRLO subdez
+00006c 36a4                      	CPI  XL,0x64
+00006d f028                      	BRLO subdez
+00006e 56a4                      	SUBI XL,0x64
+00006f 94d3                      	INC R13
+000070 36a4                      	CPI  XL,0x64
+000071 f7ac                      	BRGE subcent
+000072 f000                      	BRLO subdez
                                  
                                  subdez:
-000083 30aa                      	CPI XL,0x0A
-000084 f028                      	BRLO subuni
-000085 50aa                      	SUBI XL,0x0A
-000086 94e3                      	INC R14
-000087 30aa                      	CPI XL,0x0A
-000088 f7d4                      	BRGE subdez
-000089 f000                      	BRLO subuni
+000073 30aa                      	CPI XL,0x0A
+000074 f028                      	BRLO subuni
+000075 50aa                      	SUBI XL,0x0A
+000076 94e3                      	INC R14
+000077 30aa                      	CPI XL,0x0A
+000078 f7d4                      	BRGE subdez
+000079 f000                      	BRLO subuni
                                  
                                  subuni:
-00008a 30a0                      	CPI XL,0x00
-00008b f029                      	BREQ retorno
+00007a 30a0                      	CPI XL,0x00
+00007b f029                      	BREQ retorno
                                  
-00008c 50a1                      	SUBI XL,0x01
-00008d 94f3                      	INC R15
-00008e 30a1                      	CPI XL,0x01
-00008f f7d4                      	BRGE subuni
-000090 9508                      	RET	
-                                 retorno:
-000091 9508                      	ret
-                                 	
+00007c 50a1                      	SUBI XL,0x01
+00007d 94f3                      	INC R15
+00007e 30a1                      	CPI XL,0x01
+00007f f7d4                      	BRGE subuni
+000080 9508                      	RET	
+                                 retorno:                   ; Tive que seguir os passos da lenda...
+000081 9508                      	ret
+                                 
+                                 ;=================================================EXIBIÇÃO SAÍDAS==================================================
+                                 exibir:    ;R17 temporario    ===== R13 Centena, R14 Dezena , R13 Unidade
+                                 	;CENTENA
+000082 2d1d                      	MOV R17,R13
+000083 d014                      	RCALL mirror
+000084 2ed1                      	MOV R13,R17
+000085 e070                      	LDI R23,0b000000000
+000086 0ed7                      	ADD R13,R23
+000087 b8db                      	OUT PORTD, R13
+000088 9a28                      	SBI PORTB,0
+                                 	; DEZENA
+000089 2d1e                      	MOV R17,R14
+00008a d00d                      	RCALL mirror
+00008b e078                      	LDI R23,0b000001000
+00008c 2ee1                      	MOV R14,R17
+00008d 0ee7                      	ADD R14,R23
+00008e b8eb                      	OUT PORTD, R14
+00008f 9828                      	CBI PORTB,0
+                                 	; UNIDADE
+000090 2d1f                      	MOV R17,R15
+000091 d006                      	RCALL mirror
+000092 e074                      	LDI R23,0b000000100
+000093 2ef1                      	MOV R15,R17
+000094 0ef7                      	ADD R15,R23
+000095 b8fb                      	OUT PORTD, R15
+000096 9828                      	CBI PORTB,0
+000097 9508                      	RET
+                                 
+                                 ;=================================================SWAP==================================================
                                  mirror:
                                  	;MOV R17, R13  ; EXIBINDO CENTENA 
-000092 9512                      	SWAP R17
+000098 9512                      	SWAP R17
                                  	; COMPARA COM ZERO ATÉ NOVE
                                  
-000093 3010                      	CPI R17, 0x00
-000094 f091                      	BREQ N0
+000099 3010                      	CPI R17, 0x00
+00009a f091                      	BREQ N0
                                  
-000095 3011                      	CPI R17, 0x01
-000096 f091                      	BREQ N1
+00009b 3110                      	CPI R17, 0x10
+00009c f091                      	BREQ N1
                                  
-000097 3012                      	CPI R17, 0x02
-000098 f091                      	BREQ N2
+00009d 3210                      	CPI R17, 0x20
+00009e f091                      	BREQ N2
                                  
-000099 3013                      	CPI R17, 0x03
-00009a f091                      	BREQ N3
+00009f 3310                      	CPI R17, 0x30
+0000a0 f091                      	BREQ N3
                                  
-00009b 3014                      	CPI R17, 0x04
-00009c f091                      	BREQ N4
+0000a1 3410                      	CPI R17, 0x40
+0000a2 f091                      	BREQ N4
                                  
-00009d 3015                      	CPI R17, 0x05
-00009e f091                      	BREQ N5
+0000a3 3510                      	CPI R17, 0x50
+0000a4 f091                      	BREQ N5
                                  
-00009f 3016                      	CPI R17, 0x06
-0000a0 f091                      	BREQ N6
+0000a5 3610                      	CPI R17, 0x60
+0000a6 f091                      	BREQ N6
                                  
-0000a1 3017                      	CPI R17, 0x07
-0000a2 f091                      	BREQ N7
+0000a7 3710                      	CPI R17, 0x70
+0000a8 f091                      	BREQ N7
                                  
-0000a3 3018                      	CPI R17, 0x08
-0000a4 f091                      	BREQ N8
+0000a9 3810                      	CPI R17, 0x80
+0000aa f091                      	BREQ N8
                                  
-0000a5 3019                      	CPI R17, 0x09
-0000a6 f091                      	BREQ N9
+0000ab 3910                      	CPI R17, 0x90
+0000ac f091                      	BREQ N9
                                  
                                  	;OUT PORTD,R17
                                  	
                                  
+                                 ;=================================================ESPELHAMENTO==================================================
                                  N0:
-0000a7 e010                      	LDI R17, 0x00
-0000a8 9508                      	RET
-                                 N1:
-0000a9 e810                      	LDI R17, 0x80
-0000aa 9508                      	RET
-                                 N2:
-0000ab e410                      	LDI R17, 0x40
-0000ac 9508                      	RET
-                                 N3:
-0000ad ec10                      	LDI R17, 0xC0  ;doze
+0000ad e010                      	LDI R17, 0x00
 0000ae 9508                      	RET
-                                 N4:
-0000af e210                      	LDI R17, 0x20
+                                 N1:
+0000af e810                      	LDI R17, 0x80
 0000b0 9508                      	RET
-                                 N5:
-0000b1 ea10                      	LDI R17, 0xA0
+                                 N2:
+0000b1 e410                      	LDI R17, 0x40
 0000b2 9508                      	RET
-                                 N6:
-0000b3 e610                      	LDI R17, 0x60
+                                 N3:
+0000b3 ec10                      	LDI R17, 0xC0  ;doze
 0000b4 9508                      	RET
-                                 N7:
-0000b5 ee10                      	LDI R17, 0xE0
+                                 N4:
+0000b5 e210                      	LDI R17, 0x20
 0000b6 9508                      	RET
-                                 N8:
-0000b7 e110                      	LDI R17, 0x10
+                                 N5:
+0000b7 ea10                      	LDI R17, 0xA0
 0000b8 9508                      	RET
-                                 N9:
-0000b9 e910                      	LDI R17, 0x90
+                                 N6:
+0000b9 e610                      	LDI R17, 0x60
 0000ba 9508                      	RET
+                                 N7:
+0000bb ee10                      	LDI R17, 0xE0
+0000bc 9508                      	RET
+                                 N8:
+0000bd e110                      	LDI R17, 0x10
+0000be 9508                      	RET
+                                 N9:
+0000bf e910                      	LDI R17, 0x90
+0000c0 9508                      	RET
                                  
                                  	
-                                 	
-                                 
-                                 
-                                 	
-                                 
-                                 
-                                 	
-                                 	
-                                 
-                                 
                                  
                                  ;=================================================DELAY==================================================	
                                  delay:
-0000bb e020                      	LDI R18,0x00
-0000bc e030                      	LDI R19,0X00
-0000bd e040                      	LDI R20,0x00
+0000c1 e020                      	LDI R18,0x00
+0000c2 e030                      	LDI R19,0X00
+0000c3 e040                      	LDI R20,0x00
                                  
                                  delayloop:
-0000be 952a                      	DEC R18
-0000bf f7f1                      	BRNE delayloop //enquanto R17>0 fica decrementando
+0000c4 952a                      	DEC R18
+0000c5 f7f1                      	BRNE delayloop //enquanto R17>0 fica decrementando
                                  
-0000c0 953a                      	DEC R19
-0000c1 f7e1                      	BRNE delayloop
+0000c6 953a                      	DEC R19
+0000c7 f7e1                      	BRNE delayloop
                                  
-0000c2 954a                      	DEC R20
-0000c3 f7d1                      	BRNE delayloop
+0000c8 954a                      	DEC R20
+0000c9 f7d1                      	BRNE delayloop
                                  
-0000c4 9508                      	RET
+0000ca 9508                      	RET
                                  ; 255*255*255 = 16581375 ~ 16 mega
                                  ; decrementar 16 milhoes de vezes numa frequencia de 16 mega = 1 segundo
                                  
@@ -1403,15 +1411,15 @@ C:\Users\andre\Desktop\Microcontroladores\Labs\Lab2\Contador_Inteligente\Contado
                                  ;=================================================ROTINA DE INTERRUPÇÃO==================================================
                                  ; ENTENDER O SENTIMENTO DA COISA
                                  PCINT_ISR:
-0000c5 b116                          IN R17, PINC          ; Lê o estado atual do PINC
+0000cb b116                          IN R17, PINC          ; Lê o estado atual do PINC
                                  
                                      ; Checa se PC1 (PCINT9) está em nível baixo (botão pressionado)
-0000c6 ff11                          SBRS R17, PC1
-0000c7 df8c                          RCALL incrementar
+0000cc ff11                          SBRS R17, PC1
+0000cd df76                          RCALL incrementar
                                  
                                      ; Checa se PC3 (PCINT11) está em nível baixo (botão pressionado)
-0000c8 ff13                          SBRS R17, PC3
-0000c9 df90                          RCALL decrementar
+0000ce ff13                          SBRS R17, PC3
+0000cf df7a                          RCALL decrementar
                                  
 
 
@@ -1432,8 +1440,8 @@ counted separately from r26..r31 here.
 "ATmega328P" register use summary:
 x  :   0 y  :   0 z  :   0 r0 :   0 r1 :   0 r2 :   0 r3 :   0 r4 :   0 
 r5 :   0 r6 :   0 r7 :   0 r8 :   0 r9 :   0 r10:   0 r11:   0 r12:   0 
-r13:   6 r14:   5 r15:   5 r16:   8 r17:  40 r18:   6 r19:   5 r20:   8 
-r21:   2 r22:   0 r23:  10 r24:   4 r25:   5 r26:  18 r27:  10 r28:   4 
+r13:   7 r14:   6 r15:   6 r16:   8 r17:  41 r18:   6 r19:   5 r20:   8 
+r21:   2 r22:   0 r23:  10 r24:   7 r25:   5 r26:  18 r27:  10 r28:   4 
 r29:   4 r30:   3 r31:   3 
 Registers used: 18 out of 35 (51.4%)
 
@@ -1448,10 +1456,10 @@ clc   :   0 clh   :   0 cli   :   0 cln   :   0 clr   :   0 cls   :   0
 clt   :   0 clv   :   0 clz   :   0 com   :   0 cp    :   3 cpc   :   3 
 cpi   :  17 cpse  :   0 dec   :   3 eor   :   0 fmul  :   0 fmuls :   0 
 fmulsu:   0 icall :   0 ijmp  :   0 in    :   5 inc   :   4 jmp   :   0 
-ld    :   0 ldd   :   0 ldi   :  34 lds   :   3 lpm   :   0 lsl   :   0 
-lsr   :   0 mov   :  11 movw  :   0 mul   :   0 muls  :   0 mulsu :   0 
+ld    :   0 ldd   :   0 ldi   :  35 lds   :   3 lpm   :   0 lsl   :   0 
+lsr   :   0 mov   :  14 movw  :   0 mul   :   0 muls  :   0 mulsu :   0 
 neg   :   0 nop   :   0 or    :   0 ori   :   0 out   :   7 pop   :   0 
-push  :   0 rcall :  15 ret   :  16 reti  :   1 rjmp  :   7 rol   :   0 
+push  :   0 rcall :  16 ret   :  17 reti  :   1 rjmp  :   7 rol   :   0 
 ror   :   0 sbc   :   1 sbci  :   0 sbi   :   1 sbic  :   0 sbis  :   0 
 sbiw  :   2 sbr   :   0 sbrc  :   0 sbrs  :   7 sec   :   0 seh   :   0 
 sei   :   1 sen   :   0 ser   :   0 ses   :   0 set   :   0 sev   :   0 
@@ -1462,7 +1470,7 @@ Instructions used: 31 out of 113 (27.4%)
 "ATmega328P" memory use summary [bytes]:
 Segment   Begin    End      Code   Data   Used    Size   Use%
 ---------------------------------------------------------------
-[.cseg] 0x000000 0x000196    392      0    392   32768   1.2%
+[.cseg] 0x000000 0x0001a2    404      0    404   32768   1.2%
 [.dseg] 0x000100 0x000100      0      0      0    2048   0.0%
 [.eseg] 0x000000 0x000000      0      0      0    1024   0.0%
 
