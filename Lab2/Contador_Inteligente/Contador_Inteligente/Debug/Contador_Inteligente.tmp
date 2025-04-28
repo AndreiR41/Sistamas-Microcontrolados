@@ -24,7 +24,7 @@
  </OUTPUT_FILES>
  <LABELS>
   <botoes><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab2\Contador_Inteligente\Contador_Inteligente\main.asm</FILE><LINE>45</LINE></botoes>
-  <PCINT_ISR><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab2\Contador_Inteligente\Contador_Inteligente\main.asm</FILE><LINE>382</LINE></PCINT_ISR>
+  <PCINT_ISR><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab2\Contador_Inteligente\Contador_Inteligente\main.asm</FILE><LINE>386</LINE></PCINT_ISR>
   <ativar_adc><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab2\Contador_Inteligente\Contador_Inteligente\main.asm</FILE><LINE>20</LINE></ativar_adc>
   <comecar_adc><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab2\Contador_Inteligente\Contador_Inteligente\main.asm</FILE><LINE>27</LINE></comecar_adc>
   <esperar_adc><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab2\Contador_Inteligente\Contador_Inteligente\main.asm</FILE><LINE>31</LINE></esperar_adc>
@@ -32,28 +32,28 @@
   <inicial><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab2\Contador_Inteligente\Contador_Inteligente\main.asm</FILE><LINE>79</LINE></inicial>
   <contagem><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab2\Contador_Inteligente\Contador_Inteligente\main.asm</FILE><LINE>98</LINE></contagem>
   <minimo><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab2\Contador_Inteligente\Contador_Inteligente\main.asm</FILE><LINE>165</LINE></minimo>
-  <subcent><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab2\Contador_Inteligente\Contador_Inteligente\main.asm</FILE><LINE>221</LINE></subcent>
-  <exibir><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab2\Contador_Inteligente\Contador_Inteligente\main.asm</FILE><LINE>259</LINE></exibir>
+  <subcent><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab2\Contador_Inteligente\Contador_Inteligente\main.asm</FILE><LINE>222</LINE></subcent>
+  <exibir><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab2\Contador_Inteligente\Contador_Inteligente\main.asm</FILE><LINE>263</LINE></exibir>
   <incrementar><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab2\Contador_Inteligente\Contador_Inteligente\main.asm</FILE><LINE>135</LINE></incrementar>
   <decrementar><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab2\Contador_Inteligente\Contador_Inteligente\main.asm</FILE><LINE>148</LINE></decrementar>
-  <delay><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab2\Contador_Inteligente\Contador_Inteligente\main.asm</FILE><LINE>360</LINE></delay>
+  <delay><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab2\Contador_Inteligente\Contador_Inteligente\main.asm</FILE><LINE>364</LINE></delay>
   <Maximo><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab2\Contador_Inteligente\Contador_Inteligente\main.asm</FILE><LINE>182</LINE></Maximo>
   <passo><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab2\Contador_Inteligente\Contador_Inteligente\main.asm</FILE><LINE>198</LINE></passo>
-  <subcentlow><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab2\Contador_Inteligente\Contador_Inteligente\main.asm</FILE><LINE>228</LINE></subcentlow>
-  <subdez><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab2\Contador_Inteligente\Contador_Inteligente\main.asm</FILE><LINE>237</LINE></subdez>
-  <subuni><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab2\Contador_Inteligente\Contador_Inteligente\main.asm</FILE><LINE>246</LINE></subuni>
-  <retorno><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab2\Contador_Inteligente\Contador_Inteligente\main.asm</FILE><LINE>255</LINE></retorno>
-  <mirror><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab2\Contador_Inteligente\Contador_Inteligente\main.asm</FILE><LINE>287</LINE></mirror>
-  <N0><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab2\Contador_Inteligente\Contador_Inteligente\main.asm</FILE><LINE>326</LINE></N0>
-  <N1><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab2\Contador_Inteligente\Contador_Inteligente\main.asm</FILE><LINE>329</LINE></N1>
-  <N2><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab2\Contador_Inteligente\Contador_Inteligente\main.asm</FILE><LINE>332</LINE></N2>
-  <N3><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab2\Contador_Inteligente\Contador_Inteligente\main.asm</FILE><LINE>335</LINE></N3>
-  <N4><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab2\Contador_Inteligente\Contador_Inteligente\main.asm</FILE><LINE>338</LINE></N4>
-  <N5><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab2\Contador_Inteligente\Contador_Inteligente\main.asm</FILE><LINE>341</LINE></N5>
-  <N6><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab2\Contador_Inteligente\Contador_Inteligente\main.asm</FILE><LINE>344</LINE></N6>
-  <N7><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab2\Contador_Inteligente\Contador_Inteligente\main.asm</FILE><LINE>347</LINE></N7>
-  <N8><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab2\Contador_Inteligente\Contador_Inteligente\main.asm</FILE><LINE>350</LINE></N8>
-  <N9><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab2\Contador_Inteligente\Contador_Inteligente\main.asm</FILE><LINE>353</LINE></N9>
-  <delayloop><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab2\Contador_Inteligente\Contador_Inteligente\main.asm</FILE><LINE>365</LINE></delayloop>
+  <subcentlow><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab2\Contador_Inteligente\Contador_Inteligente\main.asm</FILE><LINE>232</LINE></subcentlow>
+  <subdez><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab2\Contador_Inteligente\Contador_Inteligente\main.asm</FILE><LINE>241</LINE></subdez>
+  <subuni><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab2\Contador_Inteligente\Contador_Inteligente\main.asm</FILE><LINE>250</LINE></subuni>
+  <retorno><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab2\Contador_Inteligente\Contador_Inteligente\main.asm</FILE><LINE>259</LINE></retorno>
+  <mirror><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab2\Contador_Inteligente\Contador_Inteligente\main.asm</FILE><LINE>291</LINE></mirror>
+  <N0><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab2\Contador_Inteligente\Contador_Inteligente\main.asm</FILE><LINE>330</LINE></N0>
+  <N1><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab2\Contador_Inteligente\Contador_Inteligente\main.asm</FILE><LINE>333</LINE></N1>
+  <N2><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab2\Contador_Inteligente\Contador_Inteligente\main.asm</FILE><LINE>336</LINE></N2>
+  <N3><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab2\Contador_Inteligente\Contador_Inteligente\main.asm</FILE><LINE>339</LINE></N3>
+  <N4><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab2\Contador_Inteligente\Contador_Inteligente\main.asm</FILE><LINE>342</LINE></N4>
+  <N5><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab2\Contador_Inteligente\Contador_Inteligente\main.asm</FILE><LINE>345</LINE></N5>
+  <N6><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab2\Contador_Inteligente\Contador_Inteligente\main.asm</FILE><LINE>348</LINE></N6>
+  <N7><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab2\Contador_Inteligente\Contador_Inteligente\main.asm</FILE><LINE>351</LINE></N7>
+  <N8><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab2\Contador_Inteligente\Contador_Inteligente\main.asm</FILE><LINE>354</LINE></N8>
+  <N9><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab2\Contador_Inteligente\Contador_Inteligente\main.asm</FILE><LINE>357</LINE></N9>
+  <delayloop><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab2\Contador_Inteligente\Contador_Inteligente\main.asm</FILE><LINE>369</LINE></delayloop>
  </LABELS>
 </ASSEMBLER_INFO>

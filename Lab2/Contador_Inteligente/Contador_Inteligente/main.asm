@@ -123,6 +123,8 @@ contagem:
 	RCALL subcent    ; faz o BIN-BCD
 	RCALL exibir     ; mostra nos displays
 
+	;RCALL delay
+
 	; compara com o maximo
 	CP XL,YL
 	CPC XH,YH
@@ -140,6 +142,7 @@ incrementar:
 	CPC XH,YH
 ;	RCALL subcent
 ;   RCALL exibir
+;   RCALL delay
 
 	BRLO incrementar; se menor volta para inc
 	RET ; se maior ou igual voltar 
@@ -154,6 +157,7 @@ decrementar:
 	CPC XH,ZH
 	;RCALL subcent
 	;RCALL exibir
+	;RCALL delay
 
 	BRSH decrementar ; se maior ou igual voltar para o DEC
 	RET ; se menor voltar 
@@ -220,37 +224,40 @@ decrementar:
 	;Os 3 MSBs (r16[7:5]) sejam copiados para os pinos PB0, PD3, PD2 (em ordem).
 
 subcent:
+	; R16 <- XH , R17 <- XL
+	MOV R16,XH
+	MOV R17,XL
 	CPI XH,0x00
 	BREQ subcentlow
-	SBIW XH:XL,50
-	SBIW XH:XL,50
+	SUBI R16,50
+	SBCI R17,50
 	INC R13
 
 subcentlow:
-	CPI  XL,0x64
+	CPI  R17,0x64
 	BRLO subdez
-	SUBI XL,0x64
+	SUBI R17,0x64
 	INC R13
-	CPI  XL,0x64
+	CPI  R17,0x64
 	BRGE subcent
 	BRLO subdez
 
 subdez:
-	CPI XL,0x0A
+	CPI R17,0x0A
 	BRLO subuni
-	SUBI XL,0x0A
+	SUBI R17,0x0A
 	INC R14
-	CPI XL,0x0A
+	CPI R17,0x0A
 	BRGE subdez
 	BRLO subuni
 
 subuni:
-	CPI XL,0x00
+	CPI R17,0x00
 	BREQ retorno
 
-	SUBI XL,0x01
+	SUBI R17,0x01
 	INC R15
-	CPI XL,0x01
+	CPI R17,0x01
 	BRGE subuni
 	RET	
 retorno:                   ; Tive que seguir os passos da lenda...
@@ -381,6 +388,7 @@ delayloop:
 ;=================================================ROTINA DE INTERRUPÇÃO==================================================
 ; ENTENDER O SENTIMENTO DA COISA
 PCINT_ISR:
+	;RCALL delay
     IN R17, PINC          ; Lê o estado atual do PINC
 
     ; Checa se PC1 (PCINT9) está em nível baixo (botão pressionado)

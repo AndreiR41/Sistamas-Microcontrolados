@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.2.8  C:\Users\andre\Desktop\Microcontroladores\Labs\Lab2\Contador_Inteligente\Contador_Inteligente\main.asm Sat Apr 26 13:15:40 2025
+AVRASM ver. 2.2.8  C:\Users\andre\Desktop\Microcontroladores\Labs\Lab2\Contador_Inteligente\Contador_Inteligente\main.asm Mon Apr 28 14:12:39 2025
 
 
 EQU  SIGNATURE_000 0000001e
@@ -696,7 +696,7 @@ EQU  TWIaddr      00000030
 EQU  SPMRaddr     00000032
 EQU  INT_VECTORS_SIZE 00000034
 CSEG botoes       0000001e
-CSEG PCINT_ISR    000000cb
+CSEG PCINT_ISR    000000cd
 CSEG ativar_adc   00000009
 CSEG comecar_adc  0000000f
 CSEG esperar_adc  00000012
@@ -705,25 +705,25 @@ CSEG inicial      0000002d
 CSEG contagem     00000035
 CSEG minimo       00000050
 CSEG subcent      00000067
-CSEG exibir       00000082
+CSEG exibir       00000084
 CSEG incrementar  00000044
 CSEG decrementar  0000004a
-CSEG delay        000000c1
+CSEG delay        000000c3
 CSEG Maximo       00000058
 CSEG passo        00000060
-CSEG subcentlow   0000006c
-CSEG subdez       00000073
-CSEG subuni       0000007a
-CSEG retorno      00000081
-CSEG mirror       00000098
-CSEG N0           000000ad
-CSEG N1           000000af
-CSEG N2           000000b1
-CSEG N3           000000b3
-CSEG N4           000000b5
-CSEG N5           000000b7
-CSEG N6           000000b9
-CSEG N7           000000bb
-CSEG N8           000000bd
-CSEG N9           000000bf
-CSEG delayloop    000000c4
+CSEG subcentlow   0000006e
+CSEG subdez       00000075
+CSEG subuni       0000007c
+CSEG retorno      00000083
+CSEG mirror       0000009a
+CSEG N0           000000af
+CSEG N1           000000b1
+CSEG N2           000000b3
+CSEG N3           000000b5
+CSEG N4           000000b7
+CSEG N5           000000b9
+CSEG N6           000000bb
+CSEG N7           000000bd
+CSEG N8           000000bf
+CSEG N9           000000c1
+CSEG delayloop    000000c6
