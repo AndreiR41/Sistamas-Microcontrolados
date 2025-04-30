@@ -1,10 +1,12 @@
 
-AVRASM ver. 2.2.8  C:\Users\andre\Desktop\Microcontroladores\Labs\Lab1\Lab1\main.asm Mon Mar 31 19:49:07 2025
+AVRASM ver. 2.2.8  C:\Users\andre\Desktop\Microcontroladores\Labs\Lab1\Lab1\main.asm Wed Apr 30 19:36:29 2025
 
 [builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m328Pdef.inc'
+C:\Users\andre\Desktop\Microcontroladores\Labs\Lab1\Lab1\main.asm(3): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m328pdef.inc'
 [builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m328Pdef.inc'
+C:\Users\andre\Desktop\Microcontroladores\Labs\Lab1\Lab1\main.asm(3): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m328pdef.inc'
                                  
-                                 ;
+                                 
                                  
                                  ;***** Created: 2011-02-09 12:03 ******* Source: ATmega328P.xml **********
                                  ;*************************************************************************
@@ -985,102 +987,243 @@ AVRASM ver. 2.2.8  C:\Users\andre\Desktop\Microcontroladores\Labs\Lab1\Lab1\main
                                  
                                  ; ***** END OF FILE ******************************************************
                                  
-                                 ; Lab1.asm
                                  ;
-                                 ; Created: 31/03/2025 16:45:13
-                                 ; Author : andre
-                                 ;
+                                 	.include "m328pdef.inc"
+                                 
+                                 ;***** Created: 2011-02-09 12:03 ******* Source: ATmega328P.xml **********
+                                 ;*************************************************************************
+                                 ;* A P P L I C A T I O N   N O T E   F O R   T H E   A V R   F A M I L Y
+                                 ;* 
+                                 ;* Number            : AVR000
+                                 ;* File Name         : "m328Pdef.inc"
+                                 ;* Title             : Register/Bit Definitions for the ATmega328P
+                                 ;* Date              : 2011-02-09
+                                 ;* Version           : 2.35
+                                 ;* Support E-mail    : avr@atmel.com
+                                 ;* Target MCU        : ATmega328P
+                                 ;* 
+                                 ;* DESCRIPTION
+                                 ;* When including this file in the assembly program file, all I/O register 
+                                 ;* names and I/O register bit names appearing in the data book can be used.
+                                 ;* In addition, the six registers forming the three data pointers X, Y and 
+                                 ;* Z have been assigned names XL - ZH. Highest RAM address for Internal 
+                                 ;* SRAM is also defined 
+                                 ;* 
+                                 ;* The Register names are represented by their hexadecimal address.
+                                 ;* 
+                                 ;* The Register Bit names are represented by their bit number (0-7).
+                                 ;* 
+                                 ;* Please observe the difference in using the bit names with instructions
+                                 ;* such as "sbr"/"cbr" (set/clear bit in register) and "sbrs"/"sbrc"
+                                 ;* (skip if bit in register set/cleared). The following example illustrates
+                                 ;* this:
+                                 ;* 
+                                 ;* in    r16,PORTB             ;read PORTB latch
+                                 ;* sbr   r16,(1<<PB6)+(1<<PB5) ;set PB6 and PB5 (use masks, not bit#)
+                                 ;* out   PORTB,r16             ;output to PORTB
+                                 ;* 
+                                 ;* in    r16,TIFR              ;read the Timer Interrupt Flag Register
+                                 ;* sbrc  r16,TOV0              ;test the overflow flag (use bit#)
+                                 ;* rjmp  TOV0_is_set           ;jump if set
+                                 ;* ...                         ;otherwise do something else
+                                 ;*************************************************************************
+                                 
+                                 #ifndef _M328PDEF_INC_
+                                 #endif  /* _M328PDEF_INC_ */
+                                 
+                                 ; ***** END OF FILE ******************************************************
+                                 
+                                 	.equ	numB 	= 10		; number of bytes in array
+                                 	.dseg
+                                 	.org	SRAM_START
+                                 
+                                 	;=================================================PILHA==================================================
+000100                           sArr:	.BYTE	numB			; allocate bytes in SRAM for array
+                                 
+                                 	.cseg
+                                 	.org	0x00
+                                 
+                                 ;=================================================SAÍDAS==================================================
+                                 organiza:
+                                 	; CONFIGURANDO PINOS DE SAÍDA
+000000 e071                      	LDI R23,(1<<PB0)
+000001 b974                      	OUT DDRB,R23     ; PB0 COMO SAÍDA
+000002 ef7c                      	LDI R23,(1<<PD2)|(1<<PD3)|(1<<PD4)|(1<<PD5)|(1<<PD6)|(1<<PD7)
+000003 b97a                      	OUT DDRD,R23  ; PD7:PD2
                                  
                                  
                                  
+                                 ; carregar dados da memoria de programa só pode ser feito de forma indireta com ponteiros!!!
+                                 ;// vezes dois para fazer deslocamento a esquerda e consertar endereço
+                                 
+                                 	;//usado para acessar o array na memoria de programa entao precisa converter de palavra p byte
+000004 e1e4                      	ldi	ZL,LOW(2*pArr)		; inicia o ponteiro
+000005 e0f0                      	ldi	ZH,HIGH(2*pArr)		; converte de palavra para byte
+                                 loop:
+                                 ; carrea em XL para usar o mesmo binbcd do contador (adaptação do lab1 antigo)
+000006 91a5                      	lpm XL,Z+           ; carrega e incrementa Z
+000007 d007                      	RCALL subcent
+000008 d023                      	RCALL exibir
+000009 cffc                      	rjmp loop
                                  
                                  
-                                 .ORG 0x000    // enderco de inicio de escrita
-                                 
-                                 main:
                                  	
-000000 ef0f                      	LDI R16,0xFF // carrega o valor 255
-                                 	;seta tudo em saida
-000001 b90a                      	OUT DDRD,R16 //configura portB como saida
-000002 ea1c                      	LDI R17,0xAC //numero que vai colocar
-000003 c008                      	RJMP subcent
                                  
-                                 exibir:
-000004 2d1d                      	MOV R17, R13
-                                 	;escreve o valor de r17 na port D
-000005 b91b                      	OUT PORTD,R17
-000006 c01a                      	RJMP atraso
                                  
-000007 2d1e                      	MOV R17, R14
-000008 c018                      	RJMP atraso
+                                 ; Espaço alocado tem que ser um número par!
+                                 ;//array da memoria de programa
+00000a 01ad
+00000b 03ff
+00000c 0504
+00000d 0724
+00000e 0954                      pArr:	.db	173,1,255,3,4,5,36,7,84,9		; program memory array //db é para carregar bits
                                  
-000009 2d1f                      	MOV R17, R15
-00000a d016                      	RCALL atraso   //chama atraso
-00000b cff4                      	RJMP main // pula de volta pra principal
                                  
-                                 	
+                                 
+                                 
+                                 
+                                 
+                                 
+                                 ;=================================================BIN-BCD==================================================
+                                 
+                                 	;FAZER FUNCAO EXIBIR NOS DISPLAYS
+                                 	; ABSURDAMENTE ERRADO ESTAMOS PERDENDO A INFORMAÇÃO NO X (ATUAL PARA EXIBIR, ENTÃO FICAMOS CONTANDO DO 0 ATÉ O 1)
+                                 	;ARMAZENAR TEMPORIAMENTE O ATUAL PARA REALIZAR OPERAÇÕES E COMPARAÇÕES !!!!
+                                 
+                                 	; 3 reg cent,dez,uni de 8 bits. Soma eles com respectivo valor 
+                                 	;Os 4 LSBs (r16[3:0]) sejam copiados para os pinos PD7, PD6, PD5, PD4 (em ordem).
+                                 	;Os 3 MSBs (r16[7:5]) sejam copiados para os pinos PB0, PD3, PD2 (em ordem).
                                  
                                  subcent:
-00000c 5614                      	SUBI R17,0x64
-00000d 94d3                      	INC R13
-00000e 3614                      	CPI  R17,0x64
-00000f f7e4                      	BRGE subcent
-000010 f000                      	BRLO subdez
+                                 	; R16 <- XH , R17 <- XL
+00000f 2f0b                      	MOV R16,XH
+000010 2f1a                      	MOV R17,XL
+000011 30b0                      	CPI XH,0x00
+000012 f019                      	BREQ subcentlow
+000013 5302                      	SUBI R16,50
+000014 4312                      	SBCI R17,50
+000015 94d3                      	INC R13
+                                 
+                                 subcentlow:
+000016 3614                      	CPI  R17,0x64
+000017 f028                      	BRLO subdez
+000018 5614                      	SUBI R17,0x64
+000019 94d3                      	INC R13
+00001a 3614                      	CPI  R17,0x64
+00001b f79c                      	BRGE subcent
+00001c f000                      	BRLO subdez
                                  
                                  subdez:
-000011 501a                      	SUBI R17,0x0A
-000012 94e3                      	INC R14
-000013 301a                      	CPI R17,0x0A
-000014 f7e4                      	BRGE subdez
-000015 f000                      	BRLO subuni
+00001d 301a                      	CPI R17,0x0A
+00001e f028                      	BRLO subuni
+00001f 501a                      	SUBI R17,0x0A
+000020 94e3                      	INC R14
+000021 301a                      	CPI R17,0x0A
+000022 f7d4                      	BRGE subdez
+000023 f000                      	BRLO subuni
                                  
                                  subuni:
-                                 ;comparando se der ruim
-000016 3010                      	CPI R17,0x00
-000017 f029                      	BREQ organiza
+000024 3010                      	CPI R17,0x00
+000025 f029                      	BREQ retorno
                                  
-000018 5011                      	SUBI R17,0x01
-000019 94f3                      	INC R15
-00001a 3011                      	CPI R17,0x01
-00001b f7d4                      	BRGE subuni
-00001c f000                      	BRLO organiza
+000026 5011                      	SUBI R17,0x01
+000027 94f3                      	INC R15
+000028 3011                      	CPI R17,0x01
+000029 f7d4                      	BRGE subuni
+00002a 9508                      	RET	
+                                 retorno:                   ; Tive que seguir os passos da lenda...
+00002b 9508                      	ret
                                  
-                                 organiza:
-00001d 94d2                      	SWAP R13
-                                 	;ADIW R00,100
-00001e 94e2                      	SWAP R14
-                                 	;ADIW R01,010
-00001f 94f2                      	SWAP R15
-                                 	;ADIW R02,001
-000020 cfe3                      	RJMP exibir
+                                 ;=================================================EXIBIÇÃO SAÍDAS==================================================
+                                 exibir:    ;R17 temporario    ===== R13 Centena, R14 Dezena , R13 Unidade
                                  
+                                 CENTENA:
+00002c 2d1d                      	MOV R17,R13
+00002d d011                      	RCALL mirror
+00002e 9a28                      	SBI PORTB,0
+00002f 985b                      	CBI PORTD,3
+000030 985a                      	CBI PORTD,2
+                                 	;RCALL delaymin
+                                 DEZENA:
+000031 2d1e                      	MOV R17,R14
+000032 d00c                      	RCALL mirror
+000033 9828                      	CBI PORTB,0
+000034 9a5b                      	SBI PORTD,3
+000035 985a                      	CBI PORTD,2
+                                 	;RCALL delaymin
+                                 UNIDADE:
+000036 2d1f                      	MOV R17,R15
+000037 d007                      	RCALL mirror
+000038 9828                      	CBI PORTB,0
+000039 985b                      	CBI PORTD,3
+00003a 9a5a                      	SBI PORTD,2
+                                 	;RCALL delaymin
                                  
+                                 	;vai contando 50 vezes para piscar
+00003b 9523                      	INC R18
+00003c 3322                      	CPI R18, 0x32
+00003d f370                      	BRLO exibir 
                                  
-                                 ;255x255x255
-                                 atraso:
-000021 e020                      	LDI R18,0x00
-000022 e030                      	LDI R19,0X00
-000023 e040                      	LDI R20,0x00
+00003e 9508                      	RET
                                  
-                                 volta:
-000024 952a                      	DEC R18
-000025 f7f1                      	BRNE volta //enquanto R17>0 fica decrementando
+                                 ;=================================================SWAP==================================================
+                                 mirror:
+                                 	
+00003f 9512                      	SWAP R17; Trocamos as posições para poder mandar pros displays
+                                 	; troca os valores da posição dos bits
+                                 	; primeiro setamos tudo em zero
+000040 e030                      	LDI R19, 0x00 
+000041 b93b                      	OUT PORTD,R19 ; Setamos todas as saídas com zero
+                                 	;fazemos a troca de posições e a saídas diretamente
+000042 fd17                      	SBRC R17,7;esse comando pula a proxima linha se o bit indicado no registrador estiver limp
+000043 9a5c                      	SBI  PORTD, 4;nesse comando setamos o bit especifico na porta para exibição com base na checagem de R17
+                                 	; para portd5
+000044 fd16                      	SBRC R17,6
+000045 9a5d                      	SBI  PORTD, 5
+                                 	; para portd6
+000046 fd15                      	SBRC R17,5
+000047 9a5e                      	SBI  PORTD, 6
+                                 	; para portd7
+000048 fd14                      	SBRC R17,4
+000049 9a5f                      	SBI  PORTD, 7
+00004a 9508                      	RET
                                  
-000026 953a                      	DEC R19
-000027 f7e1                      	BRNE volta
+                                 	
                                  
-000028 954a                      	DEC R20
-000029 f7d1                      	BRNE volta
+                                 ;=================================================DELAY==================================================	
+                                 delay:
+00004b e020                      	LDI R18,0x00
+00004c e030                      	LDI R19,0X00
+00004d e040                      	LDI R20,0x00
                                  
-00002a 9508                      	RET// retorna da sub-rotina
+                                 delayloop:
+00004e 952a                      	DEC R18
+00004f f7f1                      	BRNE delayloop //enquanto R17>0 fica decrementando
                                  
+000050 953a                      	DEC R19
+000051 f7e1                      	BRNE delayloop
                                  
+000052 954a                      	DEC R20
+000053 f7d1                      	BRNE delayloop
                                  
+000054 9508                      	RET
                                  
+                                 delaymin:
+                                 	
+000055 e020                      	LDI R18,0x00
+000056 e030                      	LDI R19,0X00
                                  
+                                 delayminloop:
+000057 952a                      	DEC R18
+000058 f7f1                      	BRNE delayminloop
                                  
+000059 953a                      	DEC R19
+00005a f7e1                      	BRNE delayminloop
                                  
-                                 
+00005b 9508                      	RET
+                                 	
+                                 ; 255*255*255 = 16581375 ~ 16 mega
+                                 ; 255*255 = 65025
 
 
 RESOURCE USE INFORMATION
@@ -1098,40 +1241,40 @@ counted separately from r26..r31 here.
 .dseg memory usage only counts static data declared with .byte
 
 "ATmega328P" register use summary:
-x  :   0 y  :   0 z  :   0 r0 :   0 r1 :   0 r2 :   0 r3 :   0 r4 :   0 
+x  :   0 y  :   0 z  :   1 r0 :   0 r1 :   0 r2 :   0 r3 :   0 r4 :   0 
 r5 :   0 r6 :   0 r7 :   0 r8 :   0 r9 :   0 r10:   0 r11:   0 r12:   0 
-r13:   3 r14:   3 r15:   3 r16:   2 r17:  12 r18:   2 r19:   2 r20:   2 
-r21:   0 r22:   0 r23:   0 r24:   0 r25:   0 r26:   0 r27:   0 r28:   0 
-r29:   0 r30:   0 r31:   0 
-Registers used: 8 out of 35 (22.9%)
+r13:   3 r14:   2 r15:   2 r16:   2 r17:  19 r18:   6 r19:   6 r20:   2 
+r21:   0 r22:   0 r23:   4 r24:   0 r25:   0 r26:   2 r27:   2 r28:   0 
+r29:   0 r30:   1 r31:   1 
+Registers used: 14 out of 35 (40.0%)
 
 "ATmega328P" instruction use summary:
 .lds  :   0 .sts  :   0 adc   :   0 add   :   0 adiw  :   0 and   :   0 
 andi  :   0 asr   :   0 bclr  :   0 bld   :   0 brbc  :   0 brbs  :   0 
-brcc  :   0 brcs  :   0 break :   0 breq  :   1 brge  :   3 brhc  :   0 
-brhs  :   0 brid  :   0 brie  :   0 brlo  :   3 brlt  :   0 brmi  :   0 
-brne  :   3 brpl  :   0 brsh  :   0 brtc  :   0 brts  :   0 brvc  :   0 
-brvs  :   0 bset  :   0 bst   :   0 call  :   0 cbi   :   0 cbr   :   0 
+brcc  :   0 brcs  :   0 break :   0 breq  :   2 brge  :   3 brhc  :   0 
+brhs  :   0 brid  :   0 brie  :   0 brlo  :   5 brlt  :   0 brmi  :   0 
+brne  :   5 brpl  :   0 brsh  :   0 brtc  :   0 brts  :   0 brvc  :   0 
+brvs  :   0 bset  :   0 bst   :   0 call  :   0 cbi   :   6 cbr   :   0 
 clc   :   0 clh   :   0 cli   :   0 cln   :   0 clr   :   0 cls   :   0 
 clt   :   0 clv   :   0 clz   :   0 com   :   0 cp    :   0 cpc   :   0 
-cpi   :   4 cpse  :   0 dec   :   3 eor   :   0 fmul  :   0 fmuls :   0 
-fmulsu:   0 icall :   0 ijmp  :   0 in    :   0 inc   :   3 jmp   :   0 
-ld    :   0 ldd   :   0 ldi   :   5 lds   :   0 lpm   :   0 lsl   :   0 
-lsr   :   0 mov   :   3 movw  :   0 mul   :   0 muls  :   0 mulsu :   0 
-neg   :   0 nop   :   0 or    :   0 ori   :   0 out   :   2 pop   :   0 
-push  :   0 rcall :   1 ret   :   1 reti  :   0 rjmp  :   5 rol   :   0 
-ror   :   0 sbc   :   0 sbci  :   0 sbi   :   0 sbic  :   0 sbis  :   0 
-sbiw  :   0 sbr   :   0 sbrc  :   0 sbrs  :   0 sec   :   0 seh   :   0 
+cpi   :   8 cpse  :   0 dec   :   5 eor   :   0 fmul  :   0 fmuls :   0 
+fmulsu:   0 icall :   0 ijmp  :   0 in    :   0 inc   :   5 jmp   :   0 
+ld    :   0 ldd   :   0 ldi   :  10 lds   :   0 lpm   :   1 lsl   :   0 
+lsr   :   0 mov   :   5 movw  :   0 mul   :   0 muls  :   0 mulsu :   0 
+neg   :   0 nop   :   0 or    :   0 ori   :   0 out   :   3 pop   :   0 
+push  :   0 rcall :   5 ret   :   6 reti  :   0 rjmp  :   1 rol   :   0 
+ror   :   0 sbc   :   0 sbci  :   1 sbi   :   7 sbic  :   0 sbis  :   0 
+sbiw  :   0 sbr   :   0 sbrc  :   4 sbrs  :   0 sec   :   0 seh   :   0 
 sei   :   0 sen   :   0 ser   :   0 ses   :   0 set   :   0 sev   :   0 
 sez   :   0 sleep :   0 spm   :   0 st    :   0 std   :   0 sts   :   0 
-sub   :   0 subi  :   3 swap  :   3 tst   :   0 wdr   :   0 
-Instructions used: 15 out of 113 (13.3%)
+sub   :   0 subi  :   4 swap  :   1 tst   :   0 wdr   :   0 
+Instructions used: 20 out of 113 (17.7%)
 
 "ATmega328P" memory use summary [bytes]:
 Segment   Begin    End      Code   Data   Used    Size   Use%
 ---------------------------------------------------------------
-[.cseg] 0x000000 0x000056     86      0     86   32768   0.3%
-[.dseg] 0x000100 0x000100      0      0      0    2048   0.0%
+[.cseg] 0x000000 0x0000b8    174     10    184   32768   0.6%
+[.dseg] 0x000100 0x00010a      0     10     10    2048   0.5%
 [.eseg] 0x000000 0x000000      0      0      0    1024   0.0%
 
 Assembly complete, 0 errors, 0 warnings

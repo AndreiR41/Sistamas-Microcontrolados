@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.2.8  C:\Users\andre\Desktop\Microcontroladores\Labs\Lab1\Lab1\main.asm Mon Mar 31 19:49:07 2025
+AVRASM ver. 2.2.8  C:\Users\andre\Desktop\Microcontroladores\Labs\Lab1\Lab1\main.asm Wed Apr 30 19:36:29 2025
 
 
 EQU  SIGNATURE_000 0000001e
@@ -695,11 +695,22 @@ EQU  ACIaddr      0000002e
 EQU  TWIaddr      00000030
 EQU  SPMRaddr     00000032
 EQU  INT_VECTORS_SIZE 00000034
-CSEG main         00000000
-CSEG subcent      0000000c
-CSEG exibir       00000004
-CSEG atraso       00000021
-CSEG subdez       00000011
-CSEG subuni       00000016
-CSEG organiza     0000001d
-CSEG volta        00000024
+EQU  numB         0000000a
+DSEG sArr         00000100
+CSEG organiza     00000000
+CSEG pArr         0000000a
+CSEG loop         00000006
+CSEG subcent      0000000f
+CSEG exibir       0000002c
+CSEG subcentlow   00000016
+CSEG subdez       0000001d
+CSEG subuni       00000024
+CSEG retorno      0000002b
+CSEG CENTENA      0000002c
+CSEG mirror       0000003f
+CSEG DEZENA       00000031
+CSEG UNIDADE      00000036
+CSEG delay        0000004b
+CSEG delayloop    0000004e
+CSEG delaymin     00000055
+CSEG delayminloop 00000057
