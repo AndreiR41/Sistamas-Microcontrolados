@@ -1,0 +1,54 @@
+<ASSEMBLER_INFO>
+ <VERSION>2.2.8</VERSION>
+ <DEVICE>"ATmega328P"</DEVICE>
+ <WORKING_DIR>C:\Users\andre\Desktop\Microcontroladores\Labs\lab3\lab3\Debug</WORKING_DIR>
+ <INCLUDE_PATH>
+  <DIR>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc</DIR>
+  <DIR>C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avrassembler\Include</DIR>
+  <DIR></DIR>
+ </INCLUDE_PATH>
+ <SOURCE_FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\lab3\lab3\main.asm</SOURCE_FILE>
+ <INCLUDED_FILES>
+  <FILE>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m328Pdef.inc</FILE>
+ </INCLUDED_FILES>
+ <OBJECT_FILES>
+  <FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\lab3\lab3\Debug\lab3.obj</FILE>
+ </OBJECT_FILES>
+ <HEX_FILES>
+  <FILE>lab3.hex</FILE>
+ </HEX_FILES>
+ <OUTPUT_FILES>
+  <FILE>lab3.map</FILE>
+  <FILE>lab3.lss</FILE>
+ </OUTPUT_FILES>
+ <LABELS>
+  <salvar><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\lab3\lab3\main.asm</FILE><LINE>68</LINE></salvar>
+  <PCINT_ISR><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\lab3\lab3\main.asm</FILE><LINE>310</LINE></PCINT_ISR>
+  <botoes><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\lab3\lab3\main.asm</FILE><LINE>16</LINE></botoes>
+  <organiza><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\lab3\lab3\main.asm</FILE><LINE>31</LINE></organiza>
+  <esperar><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\lab3\lab3\main.asm</FILE><LINE>40</LINE></esperar>
+  <medir><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\lab3\lab3\main.asm</FILE><LINE>46</LINE></medir>
+  <delay><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\lab3\lab3\main.asm</FILE><LINE>288</LINE></delay>
+  <eeprom_escrever><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\lab3\lab3\main.asm</FILE><LINE>100</LINE></eeprom_escrever>
+  <lembrar><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\lab3\lab3\main.asm</FILE><LINE>86</LINE></lembrar>
+  <EEPROM_ler><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\lab3\lab3\main.asm</FILE><LINE>117</LINE></EEPROM_ler>
+  <subcent><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\lab3\lab3\main.asm</FILE><LINE>149</LINE></subcent>
+  <subcentlow><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\lab3\lab3\main.asm</FILE><LINE>157</LINE></subcentlow>
+  <subdez><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\lab3\lab3\main.asm</FILE><LINE>166</LINE></subdez>
+  <subuni><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\lab3\lab3\main.asm</FILE><LINE>175</LINE></subuni>
+  <retorno><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\lab3\lab3\main.asm</FILE><LINE>184</LINE></retorno>
+  <exibir><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\lab3\lab3\main.asm</FILE><LINE>189</LINE></exibir>
+  <mirror><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\lab3\lab3\main.asm</FILE><LINE>217</LINE></mirror>
+  <N0><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\lab3\lab3\main.asm</FILE><LINE>256</LINE></N0>
+  <N1><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\lab3\lab3\main.asm</FILE><LINE>259</LINE></N1>
+  <N2><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\lab3\lab3\main.asm</FILE><LINE>262</LINE></N2>
+  <N3><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\lab3\lab3\main.asm</FILE><LINE>265</LINE></N3>
+  <N4><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\lab3\lab3\main.asm</FILE><LINE>268</LINE></N4>
+  <N5><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\lab3\lab3\main.asm</FILE><LINE>271</LINE></N5>
+  <N6><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\lab3\lab3\main.asm</FILE><LINE>274</LINE></N6>
+  <N7><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\lab3\lab3\main.asm</FILE><LINE>277</LINE></N7>
+  <N8><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\lab3\lab3\main.asm</FILE><LINE>280</LINE></N8>
+  <N9><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\lab3\lab3\main.asm</FILE><LINE>283</LINE></N9>
+  <delayloop><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\lab3\lab3\main.asm</FILE><LINE>293</LINE></delayloop>
+ </LABELS>
+</ASSEMBLER_INFO>
