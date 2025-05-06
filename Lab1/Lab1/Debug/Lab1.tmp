@@ -23,23 +23,22 @@
   <FILE>Lab1.lss</FILE>
  </OUTPUT_FILES>
  <LABELS>
-  <sArr><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab1\Lab1\main.asm</FILE><LINE>10</LINE></sArr>
-  <organiza><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab1\Lab1\main.asm</FILE><LINE>16</LINE></organiza>
-  <pArr><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab1\Lab1\main.asm</FILE><LINE>44</LINE></pArr>
-  <loop><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab1\Lab1\main.asm</FILE><LINE>31</LINE></loop>
-  <subcent><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab1\Lab1\main.asm</FILE><LINE>62</LINE></subcent>
-  <exibir><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab1\Lab1\main.asm</FILE><LINE>103</LINE></exibir>
-  <subcentlow><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab1\Lab1\main.asm</FILE><LINE>72</LINE></subcentlow>
-  <subdez><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab1\Lab1\main.asm</FILE><LINE>81</LINE></subdez>
-  <subuni><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab1\Lab1\main.asm</FILE><LINE>90</LINE></subuni>
-  <retorno><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab1\Lab1\main.asm</FILE><LINE>99</LINE></retorno>
-  <CENTENA><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab1\Lab1\main.asm</FILE><LINE>105</LINE></CENTENA>
-  <mirror><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab1\Lab1\main.asm</FILE><LINE>135</LINE></mirror>
-  <DEZENA><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab1\Lab1\main.asm</FILE><LINE>112</LINE></DEZENA>
-  <UNIDADE><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab1\Lab1\main.asm</FILE><LINE>119</LINE></UNIDADE>
-  <delay><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab1\Lab1\main.asm</FILE><LINE>159</LINE></delay>
-  <delayloop><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab1\Lab1\main.asm</FILE><LINE>164</LINE></delayloop>
-  <delaymin><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab1\Lab1\main.asm</FILE><LINE>176</LINE></delaymin>
-  <delayminloop><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab1\Lab1\main.asm</FILE><LINE>181</LINE></delayminloop>
+  <pArr><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab1\Lab1\main.asm</FILE><LINE>15</LINE></pArr>
+  <organiza><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab1\Lab1\main.asm</FILE><LINE>20</LINE></organiza>
+  <loop><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab1\Lab1\main.asm</FILE><LINE>38</LINE></loop>
+  <subcent><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab1\Lab1\main.asm</FILE><LINE>70</LINE></subcent>
+  <exibir><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab1\Lab1\main.asm</FILE><LINE>111</LINE></exibir>
+  <delay><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab1\Lab1\main.asm</FILE><LINE>167</LINE></delay>
+  <subcentlow><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab1\Lab1\main.asm</FILE><LINE>80</LINE></subcentlow>
+  <subdez><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab1\Lab1\main.asm</FILE><LINE>89</LINE></subdez>
+  <subuni><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab1\Lab1\main.asm</FILE><LINE>98</LINE></subuni>
+  <retorno><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab1\Lab1\main.asm</FILE><LINE>107</LINE></retorno>
+  <CENTENA><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab1\Lab1\main.asm</FILE><LINE>113</LINE></CENTENA>
+  <mirror><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab1\Lab1\main.asm</FILE><LINE>143</LINE></mirror>
+  <delaymin><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab1\Lab1\main.asm</FILE><LINE>184</LINE></delaymin>
+  <DEZENA><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab1\Lab1\main.asm</FILE><LINE>120</LINE></DEZENA>
+  <UNIDADE><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab1\Lab1\main.asm</FILE><LINE>127</LINE></UNIDADE>
+  <delayloop><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab1\Lab1\main.asm</FILE><LINE>172</LINE></delayloop>
+  <delayminloop><FILE>C:\Users\andre\Desktop\Microcontroladores\Labs\Lab1\Lab1\main.asm</FILE><LINE>189</LINE></delayminloop>
  </LABELS>
 </ASSEMBLER_INFO>

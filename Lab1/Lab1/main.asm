@@ -1,48 +1,55 @@
 
 ;
-	.include "m328pdef.inc"
+.include "m328pdef.inc"
 
-	.equ	numB 	= 10		; number of bytes in array
-	.dseg
-	.org	SRAM_START
+	
+;.dseg
+.org	0x000
 
 	;=================================================PILHA==================================================
-sArr:	.BYTE	numB			; allocate bytes in SRAM for array
 
-	.cseg
-	.org	0x00
+
+
+; Espaço alocado tem que ser um número par!
+;//array da memoria de programa
+pArr:	.db	173,1,255,3,4,5,36,7,84,9		; program memory array //db é para carregar bits
+
+
 
 ;=================================================SAÍDAS==================================================
 organiza:
 	; CONFIGURANDO PINOS DE SAÍDA
-	LDI R23,(1<<PB0)
+	LDI R23,(1<<PB0) ;R23
 	OUT DDRB,R23     ; PB0 COMO SAÍDA
 	LDI R23,(1<<PD2)|(1<<PD3)|(1<<PD4)|(1<<PD5)|(1<<PD6)|(1<<PD7)
 	OUT DDRD,R23  ; PD7:PD2
 
+	
 
 
 ; carregar dados da memoria de programa só pode ser feito de forma indireta com ponteiros!!!
 ;// vezes dois para fazer deslocamento a esquerda e consertar endereço
 
 	;//usado para acessar o array na memoria de programa entao precisa converter de palavra p byte
-	ldi	YL,LOW(2*pArr)		; inicia o ponteiro do array
-	ldi	YH,HIGH(2*pArr)		; converte de palavra para byte
+	ldi	ZL,LOW(2*pArr)		; inicia o ponteiro do array
+	ldi	ZH,HIGH(2*pArr)		; converte de palavra para byte
+
+
 loop:
 ; carrea em XL para usar o mesmo binbcd do contador (adaptação do lab1 antigo)
-	lpm XL,Y+           ; carrega e incrementa Y
+	LPM XL,Z+           ; carrega e incrementa Y
 	RCALL subcent
 	RCALL exibir
+	RCALL delay
 	;comparar se chegou no ultimo valor (numbB==10) e se sim voltar pra o começo da pilha
+	inc R25
+	CPI R25, 10
+	BREQ organiza
 	rjmp loop
 
 
 	
 
-
-; Espaço alocado tem que ser um número par!
-;//array da memoria de programa
-pArr:	.db	173,1,255,3,4,5,36,7,84,9		; program memory array //db é para carregar bits
 
 
 
@@ -109,21 +116,21 @@ CENTENA:
 	SBI PORTB,0
 	CBI PORTD,3
 	CBI PORTD,2
-	;RCALL delaymin
+	RCALL delaymin
 DEZENA:
 	MOV R17,R14
 	RCALL mirror
 	CBI PORTB,0
 	SBI PORTD,3
 	CBI PORTD,2
-	;RCALL delaymin
+	RCALL delaymin
 UNIDADE:
 	MOV R17,R15
 	RCALL mirror
 	CBI PORTB,0
 	CBI PORTD,3
 	SBI PORTD,2
-	;RCALL delaymin
+	RCALL delaymin
 
 	;vai contando 50 vezes para piscar
 	INC R18
