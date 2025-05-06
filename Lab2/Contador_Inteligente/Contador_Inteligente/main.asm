@@ -47,16 +47,12 @@ botoes:
     OUT DDRC, R16
 	LDI R16, 0b00001110     ; Ativa pull-up interno nos pinos PC1, PC2, PC3
 	OUT PORTC, r16
-	/*
-	equivalente: 
-		cbi DDRC, PC1
-		cbi DDRC, PC2
-		cbi DDRC, PC3
-		sbi PORTC, PC1
-		sbi PORTC, PC2
-		sbi PORTC, PC3
-	*/
-
+/*
+leds:
+	sbi DDRB, PB1
+	sbi DDRB, PB2
+	sbi DDRB, PB3*/
+	
 
 ;=================================================HABILITA INTERRUPÇÃO==================================================
 ; Habilita interrupções PCINT9 (PC1) e PCINT11 (PC3)                          SIMULADOR NÃO FAZ INTERRUPÇÃO
@@ -101,15 +97,9 @@ contagem:
 	; Se PC2 == 1, pula a próxima instrução
 	; Se PC2 == 0 ? botão pressionado
 ; Verifica se botão em PC2 está pressionado
-	SBRS R17,PC2
+	SBRC R17,PC2
 	RCALL minimo
-	;================= teste para verificar os outros botões estavam sendo acionados antes de configurar a interrupção
-	; Verifica se botão em PC1 está pressionado      
-/*	SBRS R17,PC1
-	RCALL incrementar
-	; Verifica se botão em PC3 está pressionado
-	SBRS R17,PC3
-	RCALL decrementar*/
+	
 
 
 ;CONTAGEM PADRÃO
@@ -123,7 +113,7 @@ contagem:
 	RCALL subcent    ; faz o BIN-BCD
 	RCALL exibir     ; mostra nos displays
 
-	;RCALL delay
+	RCALL delay
 
 	; compara com o maximo
 	CP XL,YL
@@ -140,9 +130,9 @@ incrementar:
 
 	CP XL,YL
 	CPC XH,YH
-;	RCALL subcent
-;   RCALL exibir
-;   RCALL delay
+	RCALL subcent
+    RCALL exibir
+    RCALL delay
 
 	BRLO incrementar; se menor volta para inc
 	RET ; se maior ou igual voltar 
@@ -155,9 +145,9 @@ decrementar:
 
 	CP XL,ZL
 	CPC XH,ZH
-	;RCALL subcent
-	;RCALL exibir
-	;RCALL delay
+	RCALL subcent
+	RCALL exibir
+	RCALL delay
 
 	BRSH decrementar ; se maior ou igual voltar para o DEC
 	RET ; se menor voltar 
@@ -169,16 +159,16 @@ decrementar:
 	minimo:
 ;		CHAMAR ADC E CARREGAR EM Z O VALOR LIDO
 		RCALL ativar_adc
-
+		
 		MOV ZL,R18 ; O valor menos significativo de ADC
 		MOV ZH,R19 ; O valor menos significativo de ADC
-		;RCALL exibir
+		RCALL exibir
 		;chama delay para esperar um segundo antes de ler os pinos C
 		RCALL delay
 		
 		IN R17, PINC 
 		; Verifica se botão em PC2 está pressionado
-		SBRS R17,PC2
+		SBRC R17,PC2
 		RCALL Maximo
 		RJMP minimo
 		
@@ -189,12 +179,12 @@ decrementar:
 
 		MOV YL,R18 ; O valor menos significativo de ADC
 		MOV YH,R19 ; O valor menos significativo de ADC
-		;RCALL exibir
+		RCALL exibir
 		;chama delay para esperar um segundo antes de ler os pinos C
 		RCALL delay
 
 		IN R17, PINC 
-		SBRS R17,PC2
+		SBRC R17,PC2
 		RCALL passo
 		RJMP Maximo
 		
@@ -204,12 +194,12 @@ decrementar:
 		RCALL ativar_adc
 
 		MOV R25,R18 ; O valor menos significativo de ADC
-		;RCALL exibir
+		RCALL exibir
 		;chama delay para esperar um segundo antes de ler os pinos C
 		RCALL delay
 
 		IN R17, PINC 
-		SBRS R17,PC2
+		SBRC R17,PC2
 		RJMP contagem
 		RJMP passo
 		
@@ -264,31 +254,39 @@ retorno:                   ; Tive que seguir os passos da lenda...
 	ret
 
 ;=================================================EXIBIÇÃO SAÍDAS==================================================
-exibir:    ;R17 temporario    ===== R13 Centena, R14 Dezena , R13 Unidade
-	;CENTENA
-	MOV R17,R13
-	RCALL mirror
-	MOV R13,R17
-	LDI R23,0b000000000
-	ADD R13,R23
-	OUT PORTD, R13
-	SBI PORTB,0
-	; DEZENA
-	MOV R17,R14
-	RCALL mirror
-	LDI R23,0b000001000
-	MOV R14,R17
-	ADD R14,R23
-	OUT PORTD, R14
-	CBI PORTB,0
-	; UNIDADE
-	MOV R17,R15
-	RCALL mirror
-	LDI R23,0b000000100
-	MOV R15,R17
-	ADD R15,R23
-	OUT PORTD, R15
-	CBI PORTB,0
+	exibir:    ;R17 temporario    ===== R13 Centena, R14 Dezena , R13 Unidade
+		;CENTENA
+		MOV R17,R13
+		RCALL mirror
+		MOV R13,R17
+		LDI R23,0b000000000
+		ADD R13,R23
+		OUT PORTD, R13
+		SBI PORTB,0
+		RCALL delaymin
+		; DEZENA
+		MOV R17,R14
+		RCALL mirror
+		LDI R23,0b000001000
+		MOV R14,R17
+		ADD R14,R23
+		OUT PORTD, R14
+		CBI PORTB,0
+		RCALL delaymin
+		; UNIDADE
+		MOV R17,R15
+		RCALL mirror
+		LDI R23,0b000000100
+		MOV R15,R17
+		ADD R15,R23
+		OUT PORTD, R15
+		CBI PORTB,0
+	
+		;vai contando 50 vezes para piscar
+		INC R25
+		CPI R25,50
+		BRLO exibir 
+
 	RET
 
 ;=================================================SWAP==================================================
@@ -327,7 +325,7 @@ mirror:
 	CPI R17, 0x90
 	BREQ N9
 
-	;OUT PORTD,R17
+	
 	
 
 ;=================================================ESPELHAMENTO==================================================
@@ -381,6 +379,21 @@ delayloop:
 	BRNE delayloop
 
 	RET
+
+delaymin:
+	
+	LDI R18,0x00
+	LDI R19,0X00
+
+delayminloop:
+	DEC R18
+	BRNE delayminloop
+
+	DEC R19
+	BRNE delayminloop
+
+	RET
+	
 ; 255*255*255 = 16581375 ~ 16 mega
 ; decrementar 16 milhoes de vezes numa frequencia de 16 mega = 1 segundo
 
@@ -388,15 +401,15 @@ delayloop:
 ;=================================================ROTINA DE INTERRUPÇÃO==================================================
 ; ENTENDER O SENTIMENTO DA COISA
 PCINT_ISR:
-	;RCALL delay
+	RCALL delay
     IN R17, PINC          ; Lê o estado atual do PINC
 
     ; Checa se PC1 (PCINT9) está em nível baixo (botão pressionado)
-    SBRS R17, PC1
+    SBRC R17, PC1
     RCALL incrementar
 
     ; Checa se PC3 (PCINT11) está em nível baixo (botão pressionado)
-    SBRS R17, PC3
+    SBRC R17, PC3
     RCALL decrementar
 
     RETI
