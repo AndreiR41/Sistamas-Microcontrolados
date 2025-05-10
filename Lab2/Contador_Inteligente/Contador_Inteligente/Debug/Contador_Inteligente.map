@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.2.8  C:\Users\andre\Desktop\Microcontroladores\Labs\Lab2\Contador_Inteligente\Contador_Inteligente\main.asm Tue May 06 17:05:46 2025
+AVRASM ver. 2.2.8  C:\Users\andre\Desktop\Microcontroladores\Labs\Lab2\Contador_Inteligente\Contador_Inteligente\main.asm Fri May 09 21:38:52 2025
 
 
 EQU  SIGNATURE_000 0000001e
@@ -696,36 +696,30 @@ EQU  TWIaddr      00000030
 EQU  SPMRaddr     00000032
 EQU  INT_VECTORS_SIZE 00000034
 CSEG botoes       0000001e
-CSEG PCINT_ISR    000000e3
+CSEG PCINT_ISR    0000010a
 CSEG ativar_adc   00000009
 CSEG comecar_adc  0000000f
 CSEG esperar_adc  00000012
-CSEG organiza     00000029
-CSEG inicial      0000002d
-CSEG contagem     00000035
-CSEG minimo       00000057
-CSEG subcent      00000071
-CSEG exibir       0000008e
-CSEG delay        000000d2
-CSEG incrementar  00000045
-CSEG decrementar  0000004e
-CSEG Maximo       00000060
-CSEG passo        00000069
-CSEG subcentlow   00000078
-CSEG subdez       0000007f
-CSEG subuni       00000086
-CSEG retorno      0000008d
-CSEG mirror       000000a9
-CSEG delaymin     000000dc
-CSEG N0           000000be
-CSEG N1           000000c0
-CSEG N2           000000c2
-CSEG N3           000000c4
-CSEG N4           000000c6
-CSEG N5           000000c8
-CSEG N6           000000ca
-CSEG N7           000000cc
-CSEG N8           000000ce
-CSEG N9           000000d0
-CSEG delayloop    000000d5
-CSEG delayminloop 000000de
+CSEG leds         00000022
+CSEG organiza     0000002c
+CSEG inicial      00000030
+CSEG contagem     00000039
+CSEG incrementar  00000053
+CSEG decrementar  00000062
+CSEG minimo       00000073
+CSEG subcent      000000ba
+CSEG exibir       000000d7
+CSEG Maximo       00000092
+CSEG passo        000000b1
+CSEG subcentlow   000000c2
+CSEG subdez       000000c9
+CSEG subuni       000000d0
+CSEG retorno      000000d6
+CSEG CENTENA      000000d7
+CSEG mirror       000000ed
+CSEG delaymin     00000103
+CSEG DEZENA       000000dd
+CSEG UNIDADE      000000e3
+CSEG delay        000000f9
+CSEG delayloop    000000fc
+CSEG delayminloop 00000105
