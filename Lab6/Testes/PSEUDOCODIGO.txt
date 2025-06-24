@@ -1,0 +1,38 @@
+#define F_CPU 16000000UL
+#include <avr/io.h>
+#include <util/delay.h>
+
+#include "EEPROM.c"
+#include "LCD.c"
+#include "FILTRO.c"
+#include "ADC.c"
+#include "DAC.c"
+#include "BOTAO.c"
+
+
+#define Analog0 PC0  // Pino A0
+//========================================INIT=============================
+
+//colocar dentro do init /setup
+int main() {
+    EEPROM_ler_array(memoria);
+    void iniciar_IHM();
+    iniciar_ADC();
+    initDAC();
+//
+
+//===========================================WHILE==========================
+    while (1) {
+        array_adc()
+
+        IHM();
+
+        EEPROM_escrever_array(array);
+
+        filtrar(int x[],int h[]);
+
+        fazerDAC(y);
+
+    }
+    _delay_ms(500);
+}

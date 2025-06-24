@@ -1,0 +1,45 @@
+//codigo em cpp e python alto nivel
+
+#include "DAC.c"
+#define N 16
+
+// Coeficientes do filtro FIR (escalonados ×100)
+const int16_t coeficientes[N] = {
+  1, 1, 3, 5,
+  7, 9, 11, 12,
+  12, 11, 9, 7,
+  5, 3, 1, 1
+};
+
+
+
+
+int16_t x_adc[N] = {0};
+uint8_t indice = 0;
+
+void setup() {
+  initDAC();
+  pinMode(A0, INPUT);
+}
+
+void loop() {
+  int16_t x = analogRead(A0);
+  x_adc[indice] = x;
+
+  int32_t y = 0;
+  for (uint8_t i = 0; i < N; i++) {
+    uint8_t idx = (indice + N - i) % N;  // índice circular simples
+    y += (int32_t)x_adc[idx] * coeficientes[i];
+  }
+
+  y = y / 100;  // retorno à escala original
+  y = y >> 2; // de 10 bits para 8
+
+  
+
+  fazerDAC((uint8_t)y);
+
+  indice = (indice + 1) % N;
+}
+
+
