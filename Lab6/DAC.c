@@ -9,6 +9,10 @@ void initDAC() {
 }
 
 void fazerDAC(uint8_t value) {
+   //jeito MUITO melhor de André
+    PORTC=(value<<4)& 0x30;
+    PORTB=(value>>2);
+    /*
     // D13 (PB5) = bit 7
     if(value & 0b10000000) PORTB |= (1 << PB5);
     else PORTB &= ~(1 << PB5);
@@ -40,6 +44,7 @@ void fazerDAC(uint8_t value) {
     // A4 (PC4) = bit 0
     if(value & 0b00000001) PORTC |= (1 << PC4);
     else PORTC &= ~(1 << PC4);
+    */
 }
 
 
